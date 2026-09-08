@@ -1,26 +1,9 @@
 import { useState } from "react";
+
 import { LoadingSpinner } from "../components/LoadingSpinner";
-
-const API_URL = "https://api.frankfurter.dev/v2";
-
-function fetchApi(base, quote, from, to) {
-    return fetch(
-        `${API_URL}/rates?base=${base}&quotes=${quote}&from=${from}&to=${to}`
-    )
-        .then((response) => {
-            console.log("Response status:", response.status);
-
-            if (!response.ok) {
-                throw new Error(`HTTP Error: ${response.status}`);
-            }
-
-            return response.json();
-        })
-        .then((data) => {
-            console.log(data);
-            return data;
-        });
-}
+import { fetchHistoricalRates } from "../api/frankfurter";
+import { CurrencySelect } from "../components/CurrencySelect";
+import { ErrorHandler } from "../components/ErrorHandler";
 
 function HistoricalRates() {
     // User selections
@@ -41,11 +24,16 @@ function HistoricalRates() {
     function handleSubmit(event) {
         event.preventDefault();
 
+        if (startDate > endDate) {
+            setError("Start date must be before end date.");
+            return;
+        }
+
         setLoading(true);
         setError(null);
         setRates([]);
 
-        fetchApi(
+        fetchHistoricalRates(
             baseCurrency,
             quoteCurrency,
             startDate,
@@ -68,37 +56,17 @@ function HistoricalRates() {
             <h2>Historical Conversion Data</h2>
 
             <form onSubmit={handleSubmit}>
-                <label>
-                    From:
-                    <select
-                        value={baseCurrency}
-                        onChange={(event) =>
-                            setBaseCurrency(event.target.value)
-                        }
-                    >
-                        <option value="USD">USD</option>
-                        <option value="EUR">EUR</option>
-                        <option value="GBP">GBP</option>
-                        <option value="CAD">CAD</option>
-                        <option value="JPY">JPY</option>
-                    </select>
-                </label>
+                <CurrencySelect
+                    label="From"
+                    value={baseCurrency}
+                    onChange={setBaseCurrency}
+                />
 
-                <label>
-                    To:
-                    <select
-                        value={quoteCurrency}
-                        onChange={(event) =>
-                            setQuoteCurrency(event.target.value)
-                        }
-                    >
-                        <option value="EUR">EUR</option>
-                        <option value="USD">USD</option>
-                        <option value="GBP">GBP</option>
-                        <option value="CAD">CAD</option>
-                        <option value="JPY">JPY</option>
-                    </select>
-                </label>
+                <CurrencySelect
+                    label="To"
+                    value={quoteCurrency}
+                    onChange={setQuoteCurrency}
+                />
 
                 <label>
                     Start date:
@@ -131,11 +99,7 @@ function HistoricalRates() {
                 <LoadingSpinner message="Fetching rates..." />
             )}
 
-            {error && (
-                <p className="error">
-                    Error: {error}
-                </p>
-            )}
+            <ErrorHandler error={error} />
 
             {rates.length > 0 && !loading && (
                 <section className="results">
