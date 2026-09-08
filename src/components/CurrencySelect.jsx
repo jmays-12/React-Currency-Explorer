@@ -1,4 +1,10 @@
-const DEFAULT_CURRENCIES = ["USD", "EUR", "GBP", "CAD", "JPY"];
+export const DEFAULT_CURRENCIES = [
+    { code: "USD", symbol: "$" },
+    { code: "EUR", symbol: "€" },
+    { code: "GBP", symbol: "£" },
+    { code: "CAD", symbol: "$" },
+    { code: "JPY", symbol: "¥" },
+];
 
 export function CurrencySelect({
     label,
@@ -13,9 +19,9 @@ export function CurrencySelect({
                 value={value}
                 onChange={(event) => onChange(event.target.value)}
             >
-                {currencies.map((code) => (
-                    <option key={code} value={code}>
-                        {code}
+                {currencies.map((currency) => (
+                    <option key={currency.code} value={currency.code}>
+                        {currency.code} {currency.symbol}
                     </option>
                 ))}
             </select>

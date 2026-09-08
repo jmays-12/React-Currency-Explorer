@@ -29,6 +29,11 @@ function HistoricalRates() {
             return;
         }
 
+        if (baseCurrency === quoteCurrency) {
+            setError("Please choose two different currencies.");
+            return;
+        }
+
         setLoading(true);
         setError(null);
         setRates([]);
@@ -104,8 +109,11 @@ function HistoricalRates() {
             {rates.length > 0 && !loading && (
                 <section className="results">
                     <h2>
-                        {baseCurrency} → {quoteCurrency}
+                        {baseCurrency} to {quoteCurrency}
                     </h2>
+                    <h3>
+
+                    </h3>
 
                     <p>
                         Found {rates.length} exchange rates.
@@ -113,15 +121,17 @@ function HistoricalRates() {
 
                     {/* Chart will go here */}
 
-                    <div>
-                        <h3>Raw data</h3>
+                    <details className="raw-data">
+                        <summary>Raw data (click to expand)</summary>
 
-                        {rates.map((rate) => (
-                            <p key={rate.date}>
-                                {rate.date}: {rate.rate}
-                            </p>
-                        ))}
-                    </div>
+                        <div className="raw-data-list">
+                            {rates.map((rate) => (
+                                <p key={rate.date}>
+                                    {rate.date}: {rate.rate}
+                                </p>
+                            ))}
+                        </div>
+                    </details>
                 </section>
             )}
         </section>

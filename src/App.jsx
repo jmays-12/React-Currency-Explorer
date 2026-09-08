@@ -8,6 +8,7 @@ function App() {
         <BrowserRouter>
             <header>
                 <h1>Currency Explorer</h1>
+                <h3>Convert between currencies and view historical conversion data</h3>
 
                 <nav>
                     <Link to="/">Converter</Link>

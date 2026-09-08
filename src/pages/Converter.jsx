@@ -2,7 +2,10 @@ import { useState } from "react";
 
 import { LoadingSpinner } from "../components/LoadingSpinner";
 import { fetchExchangeRate } from "../api/frankfurter";
-import { CurrencySelect } from "../components/CurrencySelect";
+import {
+    DEFAULT_CURRENCIES,
+    CurrencySelect,
+} from "../components/CurrencySelect";
 import { ErrorHandler } from "../components/ErrorHandler";
 
 function Converter() {
@@ -17,6 +20,15 @@ function Converter() {
     // UI state
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+
+    // Find currency information for the selected currencies
+    const baseCurrencyInfo = DEFAULT_CURRENCIES.find(
+        (currency) => currency.code === baseCurrency
+    );
+
+    const quoteCurrencyInfo = DEFAULT_CURRENCIES.find(
+        (currency) => currency.code === quoteCurrency
+    );
 
     function handleSubmit(event) {
         event.preventDefault();
@@ -99,8 +111,10 @@ function Converter() {
                     <h3>Conversion Result</h3>
 
                     <p>
+                        {baseCurrencyInfo.symbol}
                         {amount} {baseCurrency} ={" "}
                         <strong>
+                            {quoteCurrencyInfo.symbol}
                             {Number(result).toFixed(2)}{" "}
                             {quoteCurrency}
                         </strong>
