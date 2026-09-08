@@ -1,19 +1,17 @@
 # Currency Explorer
 
-## Description
-
 Currency Explorer is a React application that uses the [Frankfurter API](https://frankfurter.dev) to display currency exchange rates as well as historical data.
 
-Users can:
-- Convert between different currencies
-- View historical exchange rates and currency values
-- Visualize data in chart format
+- **Currency Converter** — convert an amount between two currencies using live exchange rate data
+- **Historical Rates** — select a date range and currency pair to view a line chart of exchange rates over time
+
 
 ## Technologies utilized
 
 - React & React Router
 - JavaScript
 - CSS
+- Recharts
 - Frankfurter API
 
 ## Setup
@@ -22,22 +20,20 @@ Users can:
 2. Open the project folder in your terminal
 3. Install dependencies:
 
-    npm install
+    `npm install`
 
 4. Start the development server:
 
-    npm run dev
+    `npm run dev`
 
-5. Open the local development URL in your browser of choice
+5. Open the local development URL in your browser of choice (usually `http://localhost:5173`)
 
-## API
 
-This project uses the Frankfurter API
+### API Endpoints used:
 
-## How It Works
+- `GET /v2/rate/{base}/{quote}` — fetches the current exchange rate between two currencies (used by the Converter)
+- `GET /v2/rates?base={base}&quotes={quote}&from={from}&to={to}` — fetches a time series of daily rates for a date range (used by Historical Rates)
 
-The user selects a currency to convert from and a currency to convert to.
+### Challenges & Known Limitations
 
-The application sends a request to the Frankfurter API and displays the exchange rate.
-
-The historical rates page allows the user to select a date range and view the exchange rate data as a graph.
+- Currency options are currently limited to a small set of the most common currencies rather than the full list the API supports
