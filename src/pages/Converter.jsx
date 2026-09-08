@@ -2,10 +2,7 @@ import { useState } from "react";
 
 import { LoadingSpinner } from "../components/LoadingSpinner";
 import { fetchExchangeRate } from "../api/frankfurter";
-import {
-    DEFAULT_CURRENCIES,
-    CurrencySelect,
-} from "../components/CurrencySelect";
+import { DEFAULT_CURRENCIES, CurrencySelect } from "../components/CurrencySelect";
 import { ErrorHandler } from "../components/ErrorHandler";
 
 function Converter() {
