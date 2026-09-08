@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './index.css'
+import { LoadingSpinner } from './components/LoadingSpinner'
 
 const API_URL = "https://api.frankfurter.dev/v2"
 
@@ -46,6 +47,7 @@ function App() {
 
         setLoading(true);
         setError(null);
+        setRates([]);
 
         fetchApi(baseCurrency, quoteCurrency, startDate, endDate)
             .then(data => {
@@ -66,7 +68,7 @@ function App() {
             <h1>Currency Explorer</h1>
 
             <section className="converter">
-                <h2>Currency Converter</h2>
+                <h2>Historical Conversion Data</h2>
 
                 <form onSubmit={handleSubmit}>
 
@@ -128,15 +130,15 @@ function App() {
                     </label>
 
 
-                    <button type="submit">
-                        Get Exchange Rates
+                    <button type="submit" disabled={loading}>
+                        {loading ? "..." : "Get Exchange Rates"}
                     </button>
 
                 </form>
             </section>
 
 
-            {loading && <p className="loading">Loading...</p>}
+            {loading && <LoadingSpinner message="Fetching rates..." />}
 
             {error && (
                 <p className="error">
@@ -148,7 +150,7 @@ function App() {
             {rates.length > 0 && (
                 <section className="results">
                     <h2>
-                        {baseCurrency} → {quoteCurrency}
+                        {baseCurrency} to {quoteCurrency}
                     </h2>
 
                     <p>

@@ -20,7 +20,7 @@
   color: var(--color-text-muted, #666);
 }
 
-@media {
+@media (prefers-reduced-motion: reduce) {
   .spinner {
     animation: none;
     border-top-color: var(--color-accent, #2f6f4f);
