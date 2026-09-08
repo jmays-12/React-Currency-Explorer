@@ -58,6 +58,14 @@ main {
   padding: 2rem 1rem;
 }
 
+.chart-wrapper {
+    margin: 1.5rem 0;
+    padding: 1rem;
+    background-color: #fff;
+    border: 1px solid #eee;
+    border-radius: 6px;
+}
+
 .converter {
   background-color: #ffffff;
   border: 1px solid #ddd;

@@ -4,6 +4,7 @@ import { LoadingSpinner } from "../components/LoadingSpinner";
 import { fetchHistoricalRates } from "../api/frankfurter";
 import { CurrencySelect } from "../components/CurrencySelect";
 import { ErrorHandler } from "../components/ErrorHandler";
+import { RatesChart } from "../components/RatesChart";
 
 function HistoricalRates() {
     // User selections
@@ -12,7 +13,7 @@ function HistoricalRates() {
 
     // Dates for historical data
     const [startDate, setStartDate] = useState("2025-01-01");
-    const [endDate, setEndDate] = useState("2025-12-31");
+    const [endDate, setEndDate] = useState("2026-01-01");
 
     // API results
     const [rates, setRates] = useState([]);
@@ -111,15 +112,16 @@ function HistoricalRates() {
                     <h2>
                         {baseCurrency} to {quoteCurrency}
                     </h2>
-                    <h3>
-
-                    </h3>
 
                     <p>
                         Found {rates.length} exchange rates.
                     </p>
 
-                    {/* Chart will go here */}
+                    <RatesChart
+                        rates={rates}
+                        baseCurrency={baseCurrency}
+                        quoteCurrency={quoteCurrency}
+                    />
 
                     <details className="raw-data">
                         <summary>Raw data (click to expand)</summary>
