@@ -1,122 +1,175 @@
 import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import './index.css'
+
+const API_URL = "https://api.frankfurter.dev/v2"
+
+function fetchApi(base, quote, from, to) {
+    return fetch(
+        `${API_URL}/rates?base=${base}&quotes=${quote}&from=${from}&to=${to}`
+    )
+        .then(response => {
+            console.log("Response status:", response.status);
+
+            if (!response.ok) {
+                throw new Error(`HTTP Error: ${response.status}`);
+            }
+
+            return response.json();
+        })
+        .then(data => {
+            console.log(data);
+            return data;
+        });
+}
+
 
 function App() {
-  const [count, setCount] = useState(0)
+    // User selections
+    const [baseCurrency, setBaseCurrency] = useState("USD");
+    const [quoteCurrency, setQuoteCurrency] = useState("EUR");
 
-  return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    // Dates for historical data
+    const [startDate, setStartDate] = useState("2025-01-01");
+    const [endDate, setEndDate] = useState("2025-12-31");
 
-      <div className="ticks"></div>
+    // API results
+    const [rates, setRates] = useState([]);
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+    // UI state
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+
+    function handleSubmit(event) {
+        event.preventDefault();
+
+        setLoading(true);
+        setError(null);
+
+        fetchApi(baseCurrency, quoteCurrency, startDate, endDate)
+            .then(data => {
+                setRates(data);
+            })
+            .catch(error => {
+                console.error(error);
+                setError(error.message);
+            })
+            .finally(() => {
+                setLoading(false);
+            });
+    }
+
+
+    return (
+        <main>
+            <h1>Currency Explorer</h1>
+
+            <section className="converter">
+                <h2>Currency Converter</h2>
+
+                <form onSubmit={handleSubmit}>
+
+                    <label>
+                        From:
+                        <select
+                            value={baseCurrency}
+                            onChange={(event) =>
+                                setBaseCurrency(event.target.value)
+                            }
+                        >
+                            <option value="USD">USD</option>
+                            <option value="EUR">EUR</option>
+                            <option value="GBP">GBP</option>
+                            <option value="CAD">CAD</option>
+                            <option value="JPY">JPY</option>
+                        </select>
+                    </label>
+
+
+                    <label>
+                        To:
+                        <select
+                            value={quoteCurrency}
+                            onChange={(event) =>
+                                setQuoteCurrency(event.target.value)
+                            }
+                        >
+                            <option value="EUR">EUR</option>
+                            <option value="USD">USD</option>
+                            <option value="GBP">GBP</option>
+                            <option value="CAD">CAD</option>
+                            <option value="JPY">JPY</option>
+                        </select>
+                    </label>
+
+
+                    <label>
+                        Start date:
+                        <input
+                            type="date"
+                            value={startDate}
+                            onChange={(event) =>
+                                setStartDate(event.target.value)
+                            }
+                        />
+                    </label>
+
+
+                    <label>
+                        End date:
+                        <input
+                            type="date"
+                            value={endDate}
+                            onChange={(event) =>
+                                setEndDate(event.target.value)
+                            }
+                        />
+                    </label>
+
+
+                    <button type="submit">
+                        Get Exchange Rates
+                    </button>
+
+                </form>
+            </section>
+
+
+            {loading && <p className="loading">Loading...</p>}
+
+            {error && (
+                <p className="error">
+                    Error: {error}
+                </p>
+            )}
+
+
+            {rates.length > 0 && (
+                <section className="results">
+                    <h2>
+                        {baseCurrency} → {quoteCurrency}
+                    </h2>
+
+                    <p>
+                        Found {rates.length} exchange rates.
+                    </p>
+
+                    {/* Chart will go here */}
+
+                    <div>
+                        <h3>Raw data</h3>
+
+                        {rates.map((rate) => (
+                            <p key={rate.date}>
+                                {rate.date}: {rate.rate}
+                            </p>
+                        ))}
+                    </div>
+                </section>
+            )}
+        </main>
+    )
 }
 
 export default App

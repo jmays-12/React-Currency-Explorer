@@ -1,16 +1,43 @@
-# React + Vite
+# Currency Explorer
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Description
 
-Currently, two official plugins are available:
+Currency Explorer is a React application that uses the [Frankfurter API](https://frankfurter.dev) to display currency exchange rates as well as historical data.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Users can:
+- Convert between different currencies
+- View historical exchange rates and currency values
+- Visualize data in chart format
 
-## React Compiler
+## Technologies utilized
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- React & React Router
+- JavaScript
+- CSS
+- Frankfurter API
 
-## Expanding the ESLint configuration
+## Setup
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+1. Clone this repository
+2. Open the project folder in your terminal
+3. Install dependencies:
+
+    npm install
+
+4. Start the development server:
+
+    npm run dev
+
+5. Open the local development URL in your browser of choice
+
+## API
+
+This project uses the Frankfurter API
+
+## How It Works
+
+The user selects a currency to convert from and a currency to convert to.
+
+The application sends a request to the Frankfurter API and displays the exchange rate.
+
+The historical rates page allows the user to select a date range and view the exchange rate data as a graph.
