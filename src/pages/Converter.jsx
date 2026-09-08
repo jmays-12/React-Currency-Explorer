@@ -1,26 +1,9 @@
 import { useState } from "react";
+
 import { LoadingSpinner } from "../components/LoadingSpinner";
-
-const API_URL = "https://api.frankfurter.dev/v2";
-
-function fetchExchangeRate(base, quote) {
-    return fetch(
-        `${API_URL}/rate/${base}/${quote}`
-    )
-        .then((response) => {
-            console.log("Response status:", response.status);
-
-            if (!response.ok) {
-                throw new Error(`HTTP Error: ${response.status}`);
-            }
-
-            return response.json();
-        })
-        .then((data) => {
-            console.log(data);
-            return data;
-        });
-}
+import { fetchExchangeRate } from "../api/frankfurter";
+import { CurrencySelect } from "../components/CurrencySelect";
+import { ErrorHandler } from "../components/ErrorHandler";
 
 function Converter() {
     // User selections
@@ -38,17 +21,26 @@ function Converter() {
     function handleSubmit(event) {
         event.preventDefault();
 
+        const numericAmount = Number(amount);
+
+        if (!amount || numericAmount < 0) {
+            setError("Please enter a valid amount.");
+            return;
+        }
+
+        if (baseCurrency === quoteCurrency) {
+            setError("Please choose two different currencies.");
+            return;
+        }
+
         setLoading(true);
         setError(null);
         setResult(null);
 
-        fetchExchangeRate(
-            baseCurrency,
-            quoteCurrency
-        )
+        fetchExchangeRate(baseCurrency, quoteCurrency)
             .then((data) => {
                 const convertedAmount =
-                    Number(amount) * data.rate;
+                    numericAmount * data.rate;
 
                 setResult(convertedAmount);
             })
@@ -79,37 +71,17 @@ function Converter() {
                     />
                 </label>
 
-                <label>
-                    From:
-                    <select
-                        value={baseCurrency}
-                        onChange={(event) =>
-                            setBaseCurrency(event.target.value)
-                        }
-                    >
-                        <option value="USD">USD</option>
-                        <option value="EUR">EUR</option>
-                        <option value="GBP">GBP</option>
-                        <option value="CAD">CAD</option>
-                        <option value="JPY">JPY</option>
-                    </select>
-                </label>
+                <CurrencySelect
+                    label="From"
+                    value={baseCurrency}
+                    onChange={setBaseCurrency}
+                />
 
-                <label>
-                    To:
-                    <select
-                        value={quoteCurrency}
-                        onChange={(event) =>
-                            setQuoteCurrency(event.target.value)
-                        }
-                    >
-                        <option value="EUR">EUR</option>
-                        <option value="USD">USD</option>
-                        <option value="GBP">GBP</option>
-                        <option value="CAD">CAD</option>
-                        <option value="JPY">JPY</option>
-                    </select>
-                </label>
+                <CurrencySelect
+                    label="To"
+                    value={quoteCurrency}
+                    onChange={setQuoteCurrency}
+                />
 
                 <button type="submit" disabled={loading}>
                     {loading ? "Converting..." : "Convert"}
@@ -120,11 +92,7 @@ function Converter() {
                 <LoadingSpinner message="Fetching exchange rate..." />
             )}
 
-            {error && (
-                <p className="error">
-                    Error: {error}
-                </p>
-            )}
+            <ErrorHandler error={error} />
 
             {result !== null && !loading && (
                 <div className="conversion-result">
@@ -144,4 +112,3 @@ function Converter() {
 }
 
 export default Converter;
-
