@@ -35,6 +35,7 @@ Currency Explorer is a React application that uses the [Frankfurter API](https:/
 - `GET /v2/rate/{base}/{quote}` - fetches the current exchange rate between two currencies (used by the Converter)
 - `GET /v2/rates?base={base}&quotes={quote}&from={from}&to={to}` - fetches a time series of daily rates for a date range (used by Historical Rates)
 
-### Challenges & Known Limitations
+### Known Limitations
 
 - Currency options are currently limited to a small set of common currencies rather than the full list the API supports
+- Does not use easy to read number formatting (e.g. $1,000 instead it shows $1000)
