@@ -5,6 +5,8 @@ export const DEFAULT_CURRENCIES = [
     { code: "CAD", symbol: "$", name: "Canadian Dollar" },
     { code: "JPY", symbol: "¥", name: "Japanese Yen" },
     { code: "MXN", symbol: "$", name: "Mexican Peso" },
+    { code: "CNY", symbol: "¥", name: "Chinese Yuan Renminbi" },
+    { code: "AUD", symbol: "$", name: "Australian Dollar" },
 ];
 
 export function CurrencySelect({
