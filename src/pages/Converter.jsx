@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { LoadingSpinner } from "../components/LoadingSpinner";
 import { fetchExchangeRate } from "../api/frankfurter";
-import { DEFAULT_CURRENCIES, CurrencySelect } from "../components/CurrencySelect";
+import {
+    DEFAULT_CURRENCIES,
+    CurrencySelect
+} from "../components/CurrencySelect";
 import { ErrorHandler } from "../components/ErrorHandler";
 
 function Converter() {
@@ -27,12 +30,47 @@ function Converter() {
         (currency) => currency.code === quoteCurrency
     );
 
+    // Fetch a new exchange rate whenever the currencies change
+    useEffect(() => {
+        const numericAmount = Number(amount);
+
+        // Don't fetch if the amount isn't valid
+        if (!amount || Number.isNaN(numericAmount) || numericAmount < 0) {
+            setResult(null);
+            return;
+        }
+
+        // Don't fetch if the currencies are the same
+        if (baseCurrency === quoteCurrency) {
+            setResult(null);
+            setError("Please choose two different currencies.");
+            return;
+        }
+
+        setLoading(true);
+        setError(null);
+
+        fetchExchangeRate(baseCurrency, quoteCurrency)
+            .then((data) => {
+                const convertedAmount = numericAmount * data.rate;
+                setResult(convertedAmount);
+            })
+            .catch((error) => {
+                console.error(error);
+                setResult(null);
+                setError(error.message);
+            })
+            .finally(() => {
+                setLoading(false);
+            });
+    }, [baseCurrency, quoteCurrency]);
+
     function handleSubmit(event) {
         event.preventDefault();
 
         const numericAmount = Number(amount);
 
-        if (!amount || numericAmount < 0) {
+        if (!amount || Number.isNaN(numericAmount) || numericAmount < 0) {
             setError("Please enter a valid amount.");
             return;
         }
@@ -44,22 +82,27 @@ function Converter() {
 
         setLoading(true);
         setError(null);
-        setResult(null);
 
         fetchExchangeRate(baseCurrency, quoteCurrency)
             .then((data) => {
-                const convertedAmount =
-                    numericAmount * data.rate;
-
+                const convertedAmount = numericAmount * data.rate;
                 setResult(convertedAmount);
             })
             .catch((error) => {
                 console.error(error);
+                setResult(null);
                 setError(error.message);
             })
             .finally(() => {
                 setLoading(false);
             });
+    }
+
+    function formatNumber(value) {
+        return Number(value).toLocaleString("en-US", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
     }
 
     return (
@@ -74,22 +117,29 @@ function Converter() {
                         min="0"
                         step="0.01"
                         value={amount}
-                        onChange={(event) =>
-                            setAmount(event.target.value)
-                        }
+                        onChange={(event) => {
+                            setAmount(event.target.value);
+                            setResult(null);
+                        }}
                     />
                 </label>
 
                 <CurrencySelect
                     label="From"
                     value={baseCurrency}
-                    onChange={setBaseCurrency}
+                    onChange={(value) => {
+                        setBaseCurrency(value);
+                        setResult(null);
+                    }}
                 />
 
                 <CurrencySelect
                     label="To"
                     value={quoteCurrency}
-                    onChange={setQuoteCurrency}
+                    onChange={(value) => {
+                        setQuoteCurrency(value);
+                        setResult(null);
+                    }}
                 />
 
                 <button type="submit" disabled={loading}>
@@ -109,11 +159,10 @@ function Converter() {
 
                     <p>
                         {baseCurrencyInfo.symbol}
-                        {amount} {baseCurrency} ={" "}
+                        {formatNumber(amount)} {baseCurrency} ={" "}
                         <strong>
                             {quoteCurrencyInfo.symbol}
-                            {Number(result).toFixed(2)}{" "}
-                            {quoteCurrency}
+                            {formatNumber(result)} {quoteCurrency}
                         </strong>
                     </p>
                 </div>
