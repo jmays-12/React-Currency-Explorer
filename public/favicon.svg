@@ -1,0 +1,10 @@
+<svg width="100%" viewBox="0 0 680 680" role="img" xmlns="http://www.w3.org/2000/svg">
+  <title>Currency Explorer favicon</title>
+  <desc>A circular coin icon with a dollar sign, arrow, and euro sign in green</desc>
+
+  <circle cx="340" cy="340" r="280" fill="#2f6f4f"/>
+  <circle cx="340" cy="340" r="240" fill="none" stroke="#eaf3ee" stroke-width="18"/>
+
+  <text x="340" y="480" font-family="Inter, sans-serif" font-size="400" font-weight="700" fill="#ffe371" text-anchor="middle">$</text>
+
+</svg>
