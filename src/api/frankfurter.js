@@ -11,10 +11,25 @@ export function fetchExchangeRate(base, quote) {
         });
 }
 
-export function fetchHistoricalRates(base, quote, from, to) {
-    return fetch(
-        `${API_URL}/rates?base=${base}&quotes=${quote}&from=${from}&to=${to}`
-    )
+export function fetchHistoricalRates(
+    base,
+    quote,
+    from,
+    to,
+    group = null
+) {
+    const params = new URLSearchParams({
+        base,
+        quotes: quote,
+        from,
+        to,
+    });
+
+    if (group) {
+        params.set("group", group);
+    }
+
+    return fetch(`${API_URL}/rates?${params}`)
         .then((response) => {
             if (!response.ok) {
                 throw new Error(`HTTP Error: ${response.status}`);

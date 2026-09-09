@@ -107,6 +107,11 @@ footer a:hover {
     font-weight: 600;
 }
 
+.grouping-message {
+    font-size: 0.85rem;
+    color: #444
+}
+
 form {
     display: flex;
     flex-direction: column;

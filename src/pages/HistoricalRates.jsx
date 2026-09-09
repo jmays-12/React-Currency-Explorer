@@ -6,19 +6,37 @@ import { CurrencySelect } from "../components/CurrencySelect";
 import { ErrorHandler } from "../components/ErrorHandler";
 import { RatesChart } from "../components/RatesChart";
 
+const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
+
+function getGrouping(startDate, endDate) {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    //convert result in milliseconds to days
+    const days = (end - start) / MILLISECONDS_PER_DAY;
+
+
+    if (days <= 365) {
+        return null;
+    }
+
+    if (days <= 365 * 3) {
+        return "week";
+    }
+
+    return "month";
+}
+
 function HistoricalRates() {
-    // User selections
     const [baseCurrency, setBaseCurrency] = useState("USD");
     const [quoteCurrency, setQuoteCurrency] = useState("EUR");
 
-    // Dates for historical data
     const [startDate, setStartDate] = useState("2025-01-01");
     const [endDate, setEndDate] = useState("2026-01-01");
 
-    // API results
     const [rates, setRates] = useState([]);
+    const [group, setGroup] = useState(null);
 
-    // UI state
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
@@ -35,6 +53,9 @@ function HistoricalRates() {
             return;
         }
 
+        const selectedGroup = getGrouping(startDate, endDate);
+
+        setGroup(selectedGroup);
         setLoading(true);
         setError(null);
         setRates([]);
@@ -43,7 +64,8 @@ function HistoricalRates() {
             baseCurrency,
             quoteCurrency,
             startDate,
-            endDate
+            endDate,
+            group
         )
             .then((data) => {
                 setRates(data);
@@ -116,6 +138,12 @@ function HistoricalRates() {
                     <p>
                         Found {rates.length} exchange rate datapoints
                     </p>
+
+                    {group && (
+                        <p className="grouping-message">
+                            Large date range: Showing {group}ly exchange rates to keep chart responsive
+                        </p>
+                    )}
 
                     <RatesChart
                         rates={rates}
