@@ -65,7 +65,7 @@ function HistoricalRates() {
             quoteCurrency,
             startDate,
             endDate,
-            group
+            selectedGroup
         )
             .then((data) => {
                 setRates(data);
