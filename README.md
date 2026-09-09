@@ -1,10 +1,10 @@
 # Currency Explorer
 
 Currency Explorer is a React application that uses the [Frankfurter API](https://frankfurter.dev) to display currency exchange rates as well as historical data.
+Live demo of this app can be found [here.](https://jmays-12.github.io/React-Currency-Explorer)
 
 - **Currency Converter** - Convert an amount between two currencies using live exchange rate data.
 - **Historical Rates** - Select a date range and currency pair to view a line chart of exchange rates over time. This feature will automatically scale the request to the API depending on date range size.
-
 
 
 ## Technologies utilized
