@@ -29,6 +29,7 @@ Live demo of this app can be found [here.](https://jmays-12.github.io/React-Curr
 
 5. Open the local development URL in your browser of choice (usually `http://localhost:5173`)
 
+Optionally, this app has files included to automatically deploy through GitHub Pages/Actions by changing Build and Deployment setting to GitHub Actions
 
 ### API Endpoints used:
 
