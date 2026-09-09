@@ -114,7 +114,7 @@ function HistoricalRates() {
                     </h2>
 
                     <p>
-                        Found {rates.length} exchange rates.
+                        Found {rates.length} exchange rate datapoints
                     </p>
 
                     <RatesChart

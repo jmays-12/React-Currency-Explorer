@@ -1,61 +1,171 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 
 :root {
-  font-family: "Inter", sans-serif;
-  color: #222;
-  background-color: #f5f5f5;
-  line-height: 1.5;
+    font-family: "Inter", sans-serif;
+    color: #222;
+    background-color: #f5f5f5;
+    line-height: 1.5;
 }
 
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 body {
-  margin: 0;
+    margin: 0;
+}
+
+#root {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 header {
-  background-color: #ffffff;
-  border-bottom: 1px solid #ddd;
-  padding: 1.5rem;
-  text-align: center;
+    background-color: #ffffff;
+    border-bottom: 1px solid #ddd;
+    padding: 1.5rem;
+    text-align: center;
 }
 
 header h1 {
-  margin: 0 0 1rem;
-  font-size: 2rem;
-  font-weight: 700;
+    margin-bottom: 0.5rem;
+    font-size: 2rem;
+    font-weight: 700;
 }
 
 .tagline {
-    margin: -0.5rem 0 1.25rem;
+    margin-bottom: 1.25rem;
     color: #666;
     font-size: 0.95rem;
     font-weight: 400;
 }
 
 nav {
-  display: flex;
-  justify-content: center;
-  gap: 1.5rem;
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
 }
 
 nav a {
-  color: #333;
-  text-decoration: none;
-  font-weight: 600;
+    color: #333;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.35rem 0.75rem;
+    border-radius: 4px;
+    transition: background-color 0.15s;
 }
 
 nav a:hover {
-  text-decoration: underline;
+    background-color: #f0f0f0;
+}
+
+nav a.active {
+    color: #2f6f4f;
+    font-weight: 700;
+    background-color: #eaf3ee;
 }
 
 main {
-  width: 100%;
-  max-width: 700px;
-  margin: 0 auto;
-  padding: 2rem 1rem;
+    flex: 1;
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+footer {
+    text-align: center;
+    padding: 1.3rem;
+    font-size: 0.85rem;
+    color: #888;
+    border-top: 1px solid #ddd;
+}
+
+footer a {
+    color: #2f6f4f;
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+.converter {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 2rem;
+}
+
+.converter > h2 {
+    margin-bottom: 1.5rem;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    font-weight: 600;
+}
+
+input,
+select {
+    width: 100%;
+    padding: 0.65rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font: inherit;
+    background-color: #fff;
+}
+
+input:focus,
+select:focus {
+    outline: 2px solid #2f6f4f;
+    outline-offset: 1px;
+}
+
+button {
+    padding: 0.7rem 1rem;
+    border: none;
+    border-radius: 4px;
+    background-color: #2f6f4f;
+    color: #ffffff;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+button:hover:not(:disabled) {
+    background-color: #255a3f;
+}
+
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.conversion-result {
+    margin-top: 1.5rem;
+    padding: 1.25rem 1.5rem;
+    background-color: #eaf3ee;
+    border-left: 3px solid #2f6f4f;
+    border-radius: 0 6px 6px 0;
+}
+
+.conversion-result p {
+    font-size: 1.25rem;
 }
 
 .chart-wrapper {
@@ -66,134 +176,60 @@ main {
     border-radius: 6px;
 }
 
-.converter {
-  background-color: #ffffff;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 2rem;
-}
-
-.converter > h2 {
-  margin-top: 0;
-  margin-bottom: 1.5rem;
-  text-align: center;
-  font-size: 1.5rem;
-  font-weight: 600;
-}
-
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-label {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  font-weight: 600;
-}
-
-input,
-select {
-  width: 100%;
-  padding: 0.65rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font: inherit;
-  background-color: #fff;
-}
-
-input:focus,
-select:focus {
-  outline: 2px solid #2f6f4f;
-  outline-offset: 1px;
-}
-
-button {
-  padding: 0.7rem 1rem;
-  border: none;
-  border-radius: 4px;
-  background-color: #2f6f4f;
-  color: #ffffff;
-  font: inherit;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-button:hover:not(:disabled) {
-  background-color: #255a3f;
-}
-
-button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.conversion-result {
-  margin-top: 1.5rem;
-  padding: 1rem;
-  background-color: #f5f5f5;
-  border-radius: 6px;
-}
-
-.conversion-result h3 {
-  margin-top: 0;
-}
-
-.conversion-result p {
-  margin-bottom: 0;
-  font-size: 1.1rem;
-}
-
 .results {
-  margin-top: 2rem;
+    margin-top: 2rem;
 }
 
 .results h2 {
-  margin-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.raw-data-list p {
+    margin: 0.2rem 0;
+    font-size: 0.9rem;
+    font-variant-numeric: tabular-nums;
+    color: #444;
 }
 
 .error {
-  margin-top: 1rem;
-  padding: 0.75rem 1rem;
-  border: 1px solid #d88;
-  border-radius: 4px;
-  background-color: #fff0f0;
-  color: #a00;
+    margin-top: 1rem;
+    padding: 0.75rem 1rem;
+    border: 1px solid #d88;
+    border-radius: 4px;
+    background-color: #fff0f0;
+    color: #a00;
 }
 
 .spinner-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 2rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 2rem 0;
 }
 
 .spinner {
-  width: 32px;
-  height: 32px;
-  border: 3px solid #ddd;
-  border-top-color: #2f6f4f;
-  border-radius: 50%;
-  animation: spin 0.7s linear infinite;
+    width: 32px;
+    height: 32px;
+    border: 3px solid #ddd;
+    border-top-color: #2f6f4f;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
 }
 
 .spinner-message {
-  margin: 0;
-  font-size: 0.9rem;
-  color: #666;
+    font-size: 0.9rem;
+    color: #666;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .spinner {
-    animation: none;
-  }
+    .spinner {
+        animation: none;
+    }
 }
 
 @keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
+    to {
+        transform: rotate(360deg);
+    }
 }
